@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Payment - Tiket.com</title>
+    <script>
+        window.onload = function () {
+            const urlParams = new URLSearchParams(window.location.search);
+            document.getElementById("hotel").textContent = urlParams.get("hotel");
+            document.getElementById("checkin").textContent = urlParams.get("checkin");
+            document.getElementById("checkout").textContent = urlParams.get("checkout");
+            document.getElementById("guests").textContent = urlParams.get("guests");
+            document.getElementById("name").textContent = urlParams.get("name");
+            document.getElementById("email").textContent = urlParams.get("email");
+        };
+
+        function proceedToPayment() {
+            alert("Redirecting to payment gateway...");
+            window.location.href = "https://www.tiket.com/payment";
+        }
+    </script>
+</head>
+<body>
+    <h2>Confirm Your Booking</h2>
+    <p><strong>Hotel:</strong> <span id="hotel"></span></p>
+    <p><strong>Check-in:</strong> <span id="checkin"></span></p>
+    <p><strong>Check-out:</strong> <span id="checkout"></span></p>
+    <p><strong>Guests:</strong> <span id="guests"></span></p>
+    <p><strong>Name:</strong> <span id="name"></span></p>
+    <p><strong>Email:</strong> <span id="email"></span></p>
+    <button onclick="proceedToPayment()">Proceed to Payment</button>
+</body>
+</html>
