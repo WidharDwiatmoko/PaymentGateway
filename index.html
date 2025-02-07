@@ -94,8 +94,12 @@
                 alert("Please select a payment method.");
                 return;
             }
-            alert("Redirecting to payment gateway...");
-            window.location.href = "https://www.tiket.com/payment";
+
+            const params = new URLSearchParams(window.location.search);
+            params.append("payment", selectedPaymentMethod.value);
+        
+            alert("Processing payment...");
+            window.location.href = "thank_you.html?" + params.toString();
         }
     </script>
 </head>
