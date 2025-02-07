@@ -1,7 +1,73 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Payment - Tiket.com</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 500px;
+            margin: auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            text-align: center;
+            color: #007bff;
+        }
+        p {
+            font-size: 16px;
+            margin: 10px 0;
+        }
+        .payment-section {
+            margin-top: 20px;
+            border-top: 1px solid #ddd;
+            padding-top: 15px;
+        }
+        .payment-method {
+            margin: 10px 0;
+        }
+        .payment-method label {
+            display: block;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            cursor: pointer;
+            background-color: #f8f9fa;
+        }
+        .payment-method input {
+            margin-right: 10px;
+        }
+        .total {
+            font-size: 18px;
+            font-weight: bold;
+            text-align: center;
+            margin: 20px 0;
+        }
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            text-align: center;
+            font-size: 16px;
+            color: white;
+            background-color: #007bff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .btn:hover {
+            background-color: #0056b3;
+        }
+    </style>
     <script>
         window.onload = function () {
             const urlParams = new URLSearchParams(window.location.search);
@@ -11,22 +77,55 @@
             document.getElementById("guests").textContent = urlParams.get("guests");
             document.getElementById("name").textContent = urlParams.get("name");
             document.getElementById("email").textContent = urlParams.get("email");
+
+            // Simulating a total price calculation
+            const pricePerNight = 100; // Example price per night
+            const checkinDate = new Date(urlParams.get("checkin"));
+            const checkoutDate = new Date(urlParams.get("checkout"));
+            const nights = Math.max(1, Math.round((checkoutDate - checkinDate) / (1000 * 60 * 60 * 24)));
+            const totalPrice = nights * pricePerNight;
+
+            document.getElementById("total-price").textContent = `$${totalPrice}`;
         };
 
         function proceedToPayment() {
+            const selectedPaymentMethod = document.querySelector('input[name="payment"]:checked');
+            if (!selectedPaymentMethod) {
+                alert("Please select a payment method.");
+                return;
+            }
             alert("Redirecting to payment gateway...");
             window.location.href = "https://www.tiket.com/payment";
         }
     </script>
 </head>
 <body>
-    <h2>Confirm Your Booking</h2>
-    <p><strong>Hotel:</strong> <span id="hotel"></span></p>
-    <p><strong>Check-in:</strong> <span id="checkin"></span></p>
-    <p><strong>Check-out:</strong> <span id="checkout"></span></p>
-    <p><strong>Guests:</strong> <span id="guests"></span></p>
-    <p><strong>Name:</strong> <span id="name"></span></p>
-    <p><strong>Email:</strong> <span id="email"></span></p>
-    <button onclick="proceedToPayment()">Proceed to Payment</button>
+    <div class="container">
+        <h2>Confirm Your Booking</h2>
+        <p><strong>Hotel:</strong> <span id="hotel"></span></p>
+        <p><strong>Check-in:</strong> <span id="checkin"></span></p>
+        <p><strong>Check-out:</strong> <span id="checkout"></span></p>
+        <p><strong>Guests:</strong> <span id="guests"></span></p>
+        <p><strong>Name:</strong> <span id="name"></span></p>
+        <p><strong>Email:</strong> <span id="email"></span></p>
+
+        <div class="payment-section">
+            <h3>Select Payment Method</h3>
+            <div class="payment-method">
+                <label>
+                    <input type="radio" name="payment" value="credit-card"> Credit Card
+                </label>
+                <label>
+                    <input type="radio" name="payment" value="paypal"> PayPal
+                </label>
+                <label>
+                    <input type="radio" name="payment" value="bank-transfer"> Bank Transfer
+                </label>
+            </div>
+
+            <p class="total">Total Price: <span id="total-price">$0</span></p>
+            <button class="btn" onclick="proceedToPayment()">Proceed to Payment</button>
+        </div>
+    </div>
 </body>
 </html>
