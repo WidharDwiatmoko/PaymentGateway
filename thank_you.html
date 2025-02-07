@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thank You - Tiket.com</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 500px;
+            margin: auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        h2 {
+            color: #007bff;
+        }
+        p {
+            font-size: 16px;
+            margin: 10px 0;
+        }
+        .success-icon {
+            font-size: 50px;
+            color: green;
+        }
+        .email-info {
+            margin-top: 20px;
+            font-size: 14px;
+            color: gray;
+        }
+    </style>
+    <script>
+        window.onload = function () {
+            const urlParams = new URLSearchParams(window.location.search);
+            document.getElementById("hotel").textContent = urlParams.get("hotel");
+            document.getElementById("checkin").textContent = urlParams.get("checkin");
+            document.getElementById("checkout").textContent = urlParams.get("checkout");
+            document.getElementById("guests").textContent = urlParams.get("guests");
+            document.getElementById("name").textContent = urlParams.get("name");
+            document.getElementById("email").textContent = urlParams.get("email");
+            document.getElementById("payment").textContent = urlParams.get("payment");
+
+            // Automatically send email confirmation
+            sendEmail(urlParams);
+        };
+
+        function sendEmail(params) {
+            const email = params.get("email");
+            if (!email) return;
+
+            const subject = "Your Booking Confirmation - Tiket.com";
+            const body = `
+                Thank you for booking with Tiket.com! 🎉
+
+                Booking Details:
+                - Hotel: ${params.get("hotel")}
+                - Check-in: ${params.get("checkin")}
+                - Check-out: ${params.get("checkout")}
+                - Guests: ${params.get("guests")}
+                - Name: ${params.get("name")}
+                - Payment Method: ${params.get("payment")}
+
+                We look forward to welcoming you! 🏨✨
+            `;
+
+            // Using a dummy email API (For real use, this should be replaced with a backend API)
+            fetch("https://api.emailjs.com/api/v1.0/email/send", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    service_id: "your_service_id",
+                    template_id: "your_template_id",
+                    user_id: "your_user_id",
+                    template_params: {
+                        to_email: email,
+                        subject: subject,
+                        message: body
+                    }
+                })
+            }).then(response => {
+                console.log("Email sent!", response);
+            }).catch(error => {
+                console.error("Error sending email:", error);
+            });
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div class="success-icon">✔️</div>
+        <h2>Thank You for Your Booking!</h2>
+        <p>Your booking has been confirmed. 🎉</p>
+
+        <p><strong>Hotel:</strong> <span id="hotel"></span></p>
+        <p><strong>Check-in:</strong> <span id="checkin"></span></p>
+        <p><strong>Check-out:</strong> <span id="checkout"></span></p>
+        <p><strong>Guests:</strong> <span id="guests"></span></p>
+        <p><strong>Name:</strong> <span id="name"></span></p>
+        <p><strong>Email:</strong> <span id="email"></span></p>
+        <p><strong>Payment Method:</strong> <span id="payment"></span></p>
+
+        <p class="email-info">A confirmation email has been sent to your email address. 📧</p>
+    </div>
+</body>
+</html>
