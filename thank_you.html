@@ -69,7 +69,7 @@
                 payment: params.get("payment")
             };
 
-            fetch("https://us-central1-personalproject-52258.cloudfunctions.net/send-email", {  // Use the Flask backend
+            fetch("https://us-central1-personalproject-52258.cloudfunctions.net/SMTP/send-email", {  // Use the Flask backend
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(emailData)
